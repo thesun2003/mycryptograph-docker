@@ -1,0 +1,20 @@
+version: '3.2'
+services:
+
+  api-php70:
+    build:
+      context: ./api-php70
+    container_name: mcg-api-php70
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST_API}
+    volumes:
+      - ${SITE_DIR}:/var/www/html
+    networks:
+      static-network:
+    restart: always
+
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24

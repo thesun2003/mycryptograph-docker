@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")"
+
+# install libraries via composer
+./composer-update
+
+API_COMMANDS="mkdir /var/www/html/logs; chown -R www-data /var/www/html/logs";
+
+# create `logs` folder
+echo "Creating \"logs\" folder"
+docker exec -it mcg-api-php70 bash -c "${API_COMMANDS}"
+

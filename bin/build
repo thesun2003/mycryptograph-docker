@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+SITE="mycryptograph-api"
+
+function checkProxyRunning() {
+    isProxyRunning="$(docker ps | grep mcg-proxy | wc -l)"
+
+    if [ ${isProxyRunning} == 0 ]; then
+        PROXY="-f proxy.yml"
+        PROXY_COMMAND="docker-compose ${PROXY} up --build -d"
+        ${PROXY_COMMAND}
+    fi
+}
+
+function addHost() {
+    addHostCommand="./bin/manage-hosts add $1 $2"
+    ${addHostCommand}
+}
+
+function removeHost() {
+    removeHostCommand="./bin/manage-hosts remove $1 $2"
+    ${removeHostCommand}
+}
+
+cd "$(dirname "$0")"
+cd ..
+
+CONFIG_DIR="./config"
+SITE_DIR="./../${SITE}"
+
+CONFIG=" -f ${CONFIG_DIR}/docker-compose.yml"
+PATH_FIX="-f fix-path.yml"
+
+VIRTUAL_HOST_API="mcg-api.local"
+PROXY_IP='172.20.0.250'
+
+# load variables for this environment
+set -a
+SITE=${SITE}
+SITE_DIR=${SITE_DIR}
+VIRTUAL_HOST_API=${VIRTUAL_HOST_API}
+PROXY_IP=${PROXY_IP}
+set +a
+
+# run proxy if not running
+checkProxyRunning
+
+# add host
+addHost ${VIRTUAL_HOST_API} ${PROXY_IP}
+
+# run command
+COMMAND="docker-compose ${PATH_FIX} ${CONFIG} up --build"
+echo "Running ${COMMAND}"
+${COMMAND}
+
+# remove host
+removeHost ${VIRTUAL_HOST_API} ${PROXY_IP}

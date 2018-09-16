@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+COMMANDS="cd /var/www/html/; composer install";
+
+# run command
+echo "Running composer update"
+docker exec -it mcg-api-php70 bash -c "${COMMANDS}"
