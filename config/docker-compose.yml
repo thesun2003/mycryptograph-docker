@@ -8,7 +8,21 @@ services:
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST_API}
     volumes:
-      - ${SITE_DIR}:/var/www/html
+      - ${API_DIR}:/var/www/html
+    networks:
+      static-network:
+    restart: always
+
+  web-react:
+    build:
+      context: ./web-react
+    container_name: mcg-web-react
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST_WEB}
+      - VIRTUAL_PORT=3000
+    volumes:
+      - ${WEB_DIR}/src:/srv/app/src
+      - ${WEB_DIR}/public:/srv/app/public
     networks:
       static-network:
     restart: always

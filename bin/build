@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SITE="mycryptograph-api"
+SITE="mycryptograph"
 
 function checkProxyRunning() {
     isProxyRunning="$(docker ps | grep mcg-proxy | wc -l)"
@@ -26,19 +26,24 @@ cd "$(dirname "$0")"
 cd ..
 
 CONFIG_DIR="./config"
-SITE_DIR="./../${SITE}"
+API_DIR="./../${SITE}-api"
+WEB_DIR="./../${SITE}-web"
 
 CONFIG=" -f ${CONFIG_DIR}/docker-compose.yml"
 PATH_FIX="-f fix-path.yml"
 
+cp ${WEB_DIR}/package.json ./web-react/init/
+
 VIRTUAL_HOST_API="mcg-api.local"
+VIRTUAL_HOST_WEB="mcg-web.local"
 PROXY_IP='172.20.0.250'
 
 # load variables for this environment
 set -a
-SITE=${SITE}
-SITE_DIR=${SITE_DIR}
+API_DIR=${API_DIR}
+WEB_DIR=${WEB_DIR}
 VIRTUAL_HOST_API=${VIRTUAL_HOST_API}
+VIRTUAL_HOST_WEB=${VIRTUAL_HOST_WEB}
 PROXY_IP=${PROXY_IP}
 set +a
 
@@ -47,6 +52,7 @@ checkProxyRunning
 
 # add host
 addHost ${VIRTUAL_HOST_API} ${PROXY_IP}
+addHost ${VIRTUAL_HOST_WEB} ${PROXY_IP}
 
 # run command
 COMMAND="docker-compose ${PATH_FIX} ${CONFIG} up --build"
@@ -55,3 +61,4 @@ ${COMMAND}
 
 # remove host
 removeHost ${VIRTUAL_HOST_API} ${PROXY_IP}
+removeHost ${VIRTUAL_HOST_WEB} ${PROXY_IP}
