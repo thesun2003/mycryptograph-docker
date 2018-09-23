@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+COMMANDS="npm --prefix /srv/app $1";
+
+# run command
+echo "Running NPM command: ${COMMANDS}"
+docker exec -it mcg-web-react sh -c "${COMMANDS}"
