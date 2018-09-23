@@ -21,8 +21,7 @@ services:
       - VIRTUAL_HOST=${VIRTUAL_HOST_WEB}
       - VIRTUAL_PORT=3000
     volumes:
-      - ${WEB_DIR}/src:/srv/app/src
-      - ${WEB_DIR}/public:/srv/app/public
+      - ${WEB_DIR}:/srv/app
     networks:
       static-network:
     restart: always

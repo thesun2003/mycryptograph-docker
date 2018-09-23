@@ -32,8 +32,6 @@ WEB_DIR="./../${SITE}-web"
 CONFIG=" -f ${CONFIG_DIR}/docker-compose.yml"
 PATH_FIX="-f fix-path.yml"
 
-cp ${WEB_DIR}/package.json ./web-react/init/
-
 VIRTUAL_HOST_API="mcg-api.local"
 VIRTUAL_HOST_WEB="mcg-web.local"
 PROXY_IP='172.20.0.250'

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+COMMANDS="npm --prefix /srv/app install $1 --save";
+
+# run command
+echo "Running installing a library via NPM: $1"
+docker exec -it mcg-web-react sh -c "${COMMANDS}"

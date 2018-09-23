@@ -1,15 +1,13 @@
-FROM node:alpine
+FROM node:latest
 
 ENV NPM_CONFIG_LOGLEVEL warn
+ENV SOURCE_CODE /srv/app
 
 # Create app folder and use it as the working directory
-RUN mkdir -p /srv/app
-WORKDIR /srv/app
+RUN mkdir -p $SOURCE_CODE && chown node $SOURCE_CODE
+WORKDIR $SOURCE_CODE
 
-COPY init/package.json /srv/app
-
-RUN npm install
-
+USER node
 EXPOSE 3000
 
 CMD ["npm", "start"]
