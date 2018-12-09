@@ -9,5 +9,6 @@ WORKDIR $SOURCE_CODE
 
 USER node
 EXPOSE 3000
+EXPOSE 5000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
